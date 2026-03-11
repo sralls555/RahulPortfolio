@@ -903,9 +903,13 @@ img {
 }
 
 .form-title {
-    font-family: var(--font-heading);
-    font-size: 1.8rem;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 2rem;
+    font-weight: 700;
     margin-bottom: 2rem;
+    line-height: 1.2;
+    color: var(--accent-cyan);
+    letter-spacing: -0.5px;
 }
 
 .form-group {
