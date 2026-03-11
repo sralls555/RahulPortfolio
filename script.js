@@ -105,6 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ================== CONTACT FORM HANDLING ==================
     const contactForm = document.querySelector('.contact-form');
+    const resultDiv = document.getElementById('result');
+
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -112,41 +114,68 @@ document.addEventListener('DOMContentLoaded', () => {
             const submitBtn = this.querySelector('.submit-btn');
             const originalBtnContent = submitBtn.innerHTML;
             
-            // 1. Get user inputs
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-            
-            // 2. Add loading state to button
+            // 1. Add loading state to button
             submitBtn.style.pointerEvents = 'none';
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Sending...</span>';
             submitBtn.style.opacity = '0.8';
-            
-            // 3. Simulate network request (timeout)
-            setTimeout(() => {
-                // 4. Show success state
-                submitBtn.style.background = '#10b981'; // Green color for success
-                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> <span>Message Sent!</span>';
-                submitBtn.style.opacity = '1';
+            resultDiv.style.color = "var(--text-muted)";
+            resultDiv.style.marginTop = "1rem";
+            resultDiv.innerHTML = "Please wait...";
+
+            // 2. Gather form data
+            const formData = new FormData(contactForm);
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+
+            // 3. Send AJAX request to Web3Forms
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: json
+            })
+            .then(async (response) => {
+                let jsonResponse = await response.json();
                 
-                // 5. Open fallback email client (optional)
-                // We use a short timeout so the user sees the success state before losing window focus
-                setTimeout(() => {
-                    const mailtoLink = `mailto:08sharma.ra@gmail.com?subject=Portfolio Contact from ${encodeURIComponent(name)}&body=${encodeURIComponent(message + "\n\nReply to: " + email)}`;
-                    window.location.href = mailtoLink;
+                if (response.status == 200) {
+                    // Success state
+                    submitBtn.style.background = '#10b981'; 
+                    submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> <span>Message Sent!</span>';
+                    submitBtn.style.opacity = '1';
+                    resultDiv.style.color = "#10b981";
+                    resultDiv.innerHTML = jsonResponse.message || "Message delivered successfully!";
                     
-                    // 6. Reset form
                     contactForm.reset();
-                    
-                    // Reset button after a delay
-                    setTimeout(() => {
-                        submitBtn.innerHTML = originalBtnContent;
-                        submitBtn.style.background = ''; // Reverts to default gradient
-                        submitBtn.style.pointerEvents = 'auto';
-                    }, 3000);
-                }, 800);
-                
-            }, 1500); // 1.5 second simulated loading time
+                } else {
+                    // Error state (Web3Forms API rejected it)
+                    console.log(response);
+                    submitBtn.style.background = '#ef4444'; // Red for error
+                    submitBtn.innerHTML = '<i class="fas fa-exclamation-circle"></i> <span>Failed to Send</span>';
+                    submitBtn.style.opacity = '1';
+                    resultDiv.style.color = "#ef4444";
+                    resultDiv.innerHTML = jsonResponse.message || "Something went wrong.";
+                }
+            })
+            .catch(error => {
+                // Network error state
+                console.log(error);
+                submitBtn.style.background = '#ef4444';
+                submitBtn.innerHTML = '<i class="fas fa-exclamation-circle"></i> <span>Network Error</span>';
+                submitBtn.style.opacity = '1';
+                resultDiv.style.color = "#ef4444";
+                resultDiv.innerHTML = "Failed to connect. Please try again.";
+            })
+            .finally(() => {
+                // Reset form button after 3 seconds
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalBtnContent;
+                    submitBtn.style.background = ''; // Reverts to default CSS gradient
+                    submitBtn.style.pointerEvents = 'auto';
+                    resultDiv.innerHTML = "";
+                }, 4000);
+            });
         });
     }
 
