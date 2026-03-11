@@ -103,4 +103,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ================== CONTACT FORM HANDLING ==================
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalBtnContent = submitBtn.innerHTML;
+            
+            // 1. Get user inputs
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            // 2. Add loading state to button
+            submitBtn.style.pointerEvents = 'none';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Sending...</span>';
+            submitBtn.style.opacity = '0.8';
+            
+            // 3. Simulate network request (timeout)
+            setTimeout(() => {
+                // 4. Show success state
+                submitBtn.style.background = '#10b981'; // Green color for success
+                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> <span>Message Sent!</span>';
+                submitBtn.style.opacity = '1';
+                
+                // 5. Open fallback email client (optional)
+                // We use a short timeout so the user sees the success state before losing window focus
+                setTimeout(() => {
+                    const mailtoLink = `mailto:08sharma.ra@gmail.com?subject=Portfolio Contact from ${encodeURIComponent(name)}&body=${encodeURIComponent(message + "\n\nReply to: " + email)}`;
+                    window.location.href = mailtoLink;
+                    
+                    // 6. Reset form
+                    contactForm.reset();
+                    
+                    // Reset button after a delay
+                    setTimeout(() => {
+                        submitBtn.innerHTML = originalBtnContent;
+                        submitBtn.style.background = ''; // Reverts to default gradient
+                        submitBtn.style.pointerEvents = 'auto';
+                    }, 3000);
+                }, 800);
+                
+            }, 1500); // 1.5 second simulated loading time
+        });
+    }
+
 });
