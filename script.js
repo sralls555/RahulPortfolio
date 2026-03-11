@@ -185,13 +185,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatDisplay = document.getElementById('chat-display');
     const chatChips = document.querySelectorAll('.chat-chip');
 
-    const botResponses = {
-        "What are your core skills?": "I specialize in REST APIs, payment gateways (UPI, 3DS, etc.), Developer Portals, docs-as-code, and creating high-quality cURL/JSON references.",
-        "How can I contact you?": "You can reach out to me via email at 08sharma.ra@gmail.com, use the contact form below, or connect with me on LinkedIn!",
-        "Tell me about your experience.": "I have 4+ years in SaaS and fintech. Most recently, I've been the Lead Technical Writer at Juspay Technologies handling multi-region integration guides.",
-        "What is your favorite documentation tool?": "I'm a big fan of Docs-as-Code workflows using Markdown, Git, and static site generators! For heavy lifting, I also have experience with MadCap Flare.",
-        "default": "That's a great question! I'm just a simple bot, but if you want detailed answers, try sending Rahul an email directly via the contact form below."
-    };
+    const botIntents = [
+        {
+            keywords: ["juspay", "what did you do", "experience at juspay", "role at juspay", "your work at juspay", "work"],
+            answer: "At Juspay, I am the Lead Technical Writer responsible for Express Checkout and HyperCheckout across India, SEA, and MENA. I collaborate directly with engineers to document complex fintech flows like OTM, UPI Collect, and 3DS."
+        },
+        {
+            keywords: ["api", "complex integrations", "docs strategy", "how do you document", "api strategy", "integration"],
+            answer: "My API documentation strategy involves going beyond standard reference generation. I create layered, self-serve merchant guides (platform → product → flow) bundled with sequence diagrams and exhaustive multi-region cURL/JSON error code references."
+        },
+        {
+            keywords: ["fintech", "workflows", "domain", "payment", "gateways", "expertise"],
+            answer: "My core domain expertise includes REST API documentation, payment gateway integrations, developer portal architecture, and highly complex fintech workflows (like 3DS, UPI, Mandates, digital wallets, recon, and split settlements)."
+        },
+        {
+            keywords: ["measure", "success", "metric", "impact", "evaluate"],
+            answer: "I measure documentation success strictly by impact: tracking the reduction in support escalations and merchant integration time. For instance, my documentation strategies previously reduced client setup time by ~30% and support tickets by ~20%."
+        },
+        {
+            keywords: ["contact", "email", "reach", "hire", "phone"],
+            answer: "You can reach out to me via email at 08sharma.ra@gmail.com, use the contact form below, or connect with me on LinkedIn!"
+        },
+        {
+            keywords: ["skill", "tool", "stack", "markdown", "git", "postman"],
+            answer: "My technical stack is heavily Docs-as-Code. I use Markdown, Git, OpenAPI/Swagger, Postman, and Jira/Confluence. I also have robust experience setting up developer portal architectures."
+        }
+    ];
+
+    const defaultResponse = "That's a great question! I'm just a simple bot, but if you want detailed answers regarding my technical writing, try sending Rahul an email directly via the contact form below.";
 
     function addMessage(text, sender) {
         const messageDiv = document.createElement('div');
@@ -217,9 +238,20 @@ document.addEventListener('DOMContentLoaded', () => {
         addMessage(question, 'user');
         chatInput.value = '';
         
+        // Match logic
+        let answer = defaultResponse;
+        let lowerQ = question.toLowerCase();
+        
+        // Check exact chip match first by scanning keywords
+        for (let intent of botIntents) {
+            if (intent.keywords.some(kw => lowerQ.includes(kw.toLowerCase()))) {
+                answer = intent.answer;
+                break;
+            }
+        }
+        
         // Simulate thinking delay
         setTimeout(() => {
-            const answer = botResponses[question] || botResponses["default"];
             addMessage(answer, 'bot');
         }, 600);
     }

@@ -61,6 +61,36 @@
         </div>
     </header>
 
+    <!-- Ask Me Anything Section -->
+    <section id="ask-me" class="section ask-me-section">
+        <div class="container section-container align-center">
+            <h3 class="section-badge">Interactive</h3>
+            <h2 class="section-title">Ask Me <span class="gradient-text">Anything</span></h2>
+            
+            <div class="chat-container glass-panel reveal">
+                <div class="chat-display" id="chat-display">
+                    <!-- Initial Bot Message -->
+                    <div class="chat-message bot-message">
+                        <div class="bot-avatar"><i class="fas fa-robot"></i></div>
+                        <div class="message-content">Hi! I'm Rahul's AI assistant. I can tell you about his work at Juspay, his API integration strategies, or his Fintech expertise. Ask me anything!</div>
+                    </div>
+                </div>
+                
+                <div class="chat-options" id="chat-options">
+                    <button class="chat-chip" data-question="What did you do at Juspay?">Juspay Experience</button>
+                    <button class="chat-chip" data-question="How do you handle complex API integrations?">API Docs Strategy</button>
+                    <button class="chat-chip" data-question="What fintech workflows are you familiar with?">Fintech Expertise</button>
+                    <button class="chat-chip" data-question="How do you measure doc success?">Impact & Metrics</button>
+                </div>
+                
+                <form class="chat-input-wrapper" id="chat-form">
+                    <input type="text" id="chat-input" placeholder="Ask a question..." autocomplete="off">
+                    <button type="submit" id="send-chat" aria-label="Send Message"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <section id="about" class="section about-section">
         <div class="container section-container">
             <div class="section-header">
@@ -262,36 +292,6 @@
                     <p class="edu-location">Pune, India</p>
                 </div>
                 <div class="edu-date">03/2011 – 05/2014</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Ask Me Anything Section -->
-    <section id="ask-me" class="section ask-me-section">
-        <div class="container section-container align-center">
-            <h3 class="section-badge">Interactive</h3>
-            <h2 class="section-title">Ask Me <span class="gradient-text">Anything</span></h2>
-            
-            <div class="chat-container glass-panel reveal">
-                <div class="chat-display" id="chat-display">
-                    <!-- Initial Bot Message -->
-                    <div class="chat-message bot-message">
-                        <div class="bot-avatar"><i class="fas fa-robot"></i></div>
-                        <div class="message-content">Hi! I'm Rahul's AI assistant. What would you like to know? Feel free to ask about his skills or how to get in touch.</div>
-                    </div>
-                </div>
-                
-                <div class="chat-options" id="chat-options">
-                    <button class="chat-chip" data-question="What are your core skills?">Skills</button>
-                    <button class="chat-chip" data-question="How can I contact you?">Contact</button>
-                    <button class="chat-chip" data-question="Tell me about your experience.">Experience</button>
-                    <button class="chat-chip" data-question="What is your favorite documentation tool?">Tools</button>
-                </div>
-                
-                <form class="chat-input-wrapper" id="chat-form">
-                    <input type="text" id="chat-input" placeholder="Ask a question..." autocomplete="off">
-                    <button type="submit" id="send-chat" aria-label="Send Message"><i class="fas fa-paper-plane"></i></button>
-                </form>
             </div>
         </div>
     </section>
