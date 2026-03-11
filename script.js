@@ -179,4 +179,64 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ================== ASK ME ANYTHING CHAT ==================
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const chatDisplay = document.getElementById('chat-display');
+    const chatChips = document.querySelectorAll('.chat-chip');
+
+    const botResponses = {
+        "What are your core skills?": "I specialize in REST APIs, payment gateways (UPI, 3DS, etc.), Developer Portals, docs-as-code, and creating high-quality cURL/JSON references.",
+        "How can I contact you?": "You can reach out to me via email at 08sharma.ra@gmail.com, use the contact form below, or connect with me on LinkedIn!",
+        "Tell me about your experience.": "I have 4+ years in SaaS and fintech. Most recently, I've been the Lead Technical Writer at Juspay Technologies handling multi-region integration guides.",
+        "What is your favorite documentation tool?": "I'm a big fan of Docs-as-Code workflows using Markdown, Git, and static site generators! For heavy lifting, I also have experience with MadCap Flare.",
+        "default": "That's a great question! I'm just a simple bot, but if you want detailed answers, try sending Rahul an email directly via the contact form below."
+    };
+
+    function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${sender}-message`;
+        
+        let avatarHTML = sender === 'bot' 
+            ? '<div class="bot-avatar"><i class="fas fa-robot"></i></div>' 
+            : '<div class="user-avatar"><i class="fas fa-user"></i></div>';
+            
+        messageDiv.innerHTML = `
+            ${avatarHTML}
+            <div class="message-content">${text}</div>
+        `;
+        
+        chatDisplay.appendChild(messageDiv);
+        chatDisplay.scrollTop = chatDisplay.scrollHeight;
+    }
+
+    function handleChatRequest(question) {
+        if (!question.trim()) return;
+        
+        // Add User Message
+        addMessage(question, 'user');
+        chatInput.value = '';
+        
+        // Simulate thinking delay
+        setTimeout(() => {
+            const answer = botResponses[question] || botResponses["default"];
+            addMessage(answer, 'bot');
+        }, 600);
+    }
+
+    // Handle form submit
+    if (chatForm) {
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleChatRequest(chatInput.value);
+        });
+    }
+
+    // Handle chips
+    chatChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            handleChatRequest(chip.getAttribute('data-question'));
+        });
+    });
+
 });

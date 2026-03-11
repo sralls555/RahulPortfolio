@@ -266,6 +266,36 @@
         </div>
     </section>
 
+    <!-- Ask Me Anything Section -->
+    <section id="ask-me" class="section ask-me-section">
+        <div class="container section-container align-center">
+            <h3 class="section-badge">Interactive</h3>
+            <h2 class="section-title">Ask Me <span class="gradient-text">Anything</span></h2>
+            
+            <div class="chat-container glass-panel reveal">
+                <div class="chat-display" id="chat-display">
+                    <!-- Initial Bot Message -->
+                    <div class="chat-message bot-message">
+                        <div class="bot-avatar"><i class="fas fa-robot"></i></div>
+                        <div class="message-content">Hi! I'm Rahul's AI assistant. What would you like to know? Feel free to ask about his skills or how to get in touch.</div>
+                    </div>
+                </div>
+                
+                <div class="chat-options" id="chat-options">
+                    <button class="chat-chip" data-question="What are your core skills?">Skills</button>
+                    <button class="chat-chip" data-question="How can I contact you?">Contact</button>
+                    <button class="chat-chip" data-question="Tell me about your experience.">Experience</button>
+                    <button class="chat-chip" data-question="What is your favorite documentation tool?">Tools</button>
+                </div>
+                
+                <form class="chat-input-wrapper" id="chat-form">
+                    <input type="text" id="chat-input" placeholder="Ask a question..." autocomplete="off">
+                    <button type="submit" id="send-chat" aria-label="Send Message"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <section id="contact" class="section contact-section">
         <div class="container section-container">
             <div class="contact-content reveal">
