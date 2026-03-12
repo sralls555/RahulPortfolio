@@ -207,17 +207,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function closeChatOverlay() {
+    function closeChatOverlay(minimizeToFAB = false) {
         if (mainChatContainer) {
             mainChatContainer.classList.remove('chat-overlay-active');
             if(chatBackdrop) chatBackdrop.classList.remove('active');
             document.documentElement.classList.remove('no-scroll'); // restore scrolling
             
-            if (hasInteractedWithChat) {
+            if (hasInteractedWithChat && minimizeToFAB) {
                 // Minimize to FAB corner
                 mainChatContainer.classList.add('chat-minimized');
             } else {
-                // Return to original container after transition finishes
+                // Return to original container inline after transition finishes
+                mainChatContainer.classList.remove('chat-minimized');
                 setTimeout(() => {
                     if (originalParent) {
                         if (chatBackdrop) originalParent.insertBefore(chatBackdrop, originalNextSibling);
@@ -241,10 +242,15 @@ document.addEventListener('DOMContentLoaded', () => {
         chatInput.addEventListener('focus', openChatOverlay);
     }
     if (closeChatBtn) {
-        closeChatBtn.addEventListener('click', closeChatOverlay);
+        closeChatBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeChatOverlay(false); // Close completely back to inline
+        });
     }
     if (chatBackdrop) {
-        chatBackdrop.addEventListener('click', closeChatOverlay);
+        chatBackdrop.addEventListener('click', () => {
+            closeChatOverlay(true); // Minimize to FAB when clicking outside
+        });
     }
 
     const botIntents = [
