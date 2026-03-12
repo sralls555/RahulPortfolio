@@ -270,11 +270,32 @@ document.addEventListener('DOMContentLoaded', () => {
             
         messageDiv.innerHTML = `
             ${avatarHTML}
-            <div class="message-content">${text}</div>
+            <div class="message-content${sender === 'bot' ? ' typing-cursor' : ''}"></div>
         `;
         
         chatDisplay.appendChild(messageDiv);
-        chatDisplay.scrollTop = chatDisplay.scrollHeight;
+        const contentDiv = messageDiv.querySelector('.message-content');
+        
+        if (sender === 'bot') {
+            let i = 0;
+            const typeWriter = setInterval(() => {
+                if (i < text.length) {
+                    contentDiv.innerHTML += text.charAt(i);
+                    i++;
+                    chatDisplay.scrollTop = chatDisplay.scrollHeight; // Auto-scroll while typing
+                    // Subtle vibration for mobile when typing characters
+                    if (navigator.vibrate && i % 3 === 0) { 
+                        navigator.vibrate(5); // Ultra-light 5ms tap perfectly simulates haptic typing
+                    }
+                } else {
+                    clearInterval(typeWriter);
+                    contentDiv.classList.remove('typing-cursor');
+                }
+            }, 15); // Fast but readable Apple-style typing speed
+        } else {
+            contentDiv.innerHTML = text;
+            chatDisplay.scrollTop = chatDisplay.scrollHeight;
+        }
     }
 
     function handleChatRequest(question) {
