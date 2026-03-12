@@ -17,8 +17,8 @@
     --gradient-glow: linear-gradient(90deg, #6366f1, #06b6d4, #8b5cf6);
 
     /* Fonts */
-    --font-heading: 'Outfit', sans-serif;
-    --font-body: 'Inter', sans-serif;
+    --font-heading: 'Roboto Mono', monospace;
+    --font-body: 'Roboto Mono', monospace;
 
     /* Layout */
     --max-width: 1200px;
@@ -257,6 +257,7 @@ img {
     color: var(--text-main);
     display: inline-flex;
     align-items: center;
+    letter-spacing: -1.5px;
 }
 
 .align-center {
@@ -434,6 +435,7 @@ img {
     font-size: 5rem;
     font-weight: 800;
     line-height: 1.1;
+    letter-spacing: -3px; /* Keeps monospace headings tight and readable */
     margin-bottom: 1rem;
 }
 
@@ -1174,7 +1176,7 @@ img {
     margin-bottom: 2rem;
     line-height: 1.2;
     color: var(--accent-cyan);
-    letter-spacing: -0.5px;
+    letter-spacing: -1.5px;
 }
 .form-group {
     margin-bottom: 1.5rem;
