@@ -191,6 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Remember original DOM position
     const originalParent = mainChatContainer ? mainChatContainer.parentElement : null;
     const originalNextSibling = mainChatContainer ? mainChatContainer.nextSibling : null;
+    let hasInteractedWithChat = false;
 
     function openChatOverlay() {
         if (mainChatContainer && !mainChatContainer.classList.contains('chat-overlay-active')) {
@@ -198,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (chatBackdrop) document.body.appendChild(chatBackdrop);
             document.body.appendChild(mainChatContainer);
             
+            mainChatContainer.classList.remove('chat-minimized');
             mainChatContainer.classList.add('chat-overlay-active');
             if(chatBackdrop) chatBackdrop.classList.add('active');
             document.documentElement.classList.add('no-scroll'); // prevent scrolling behind
@@ -211,14 +213,28 @@ document.addEventListener('DOMContentLoaded', () => {
             if(chatBackdrop) chatBackdrop.classList.remove('active');
             document.documentElement.classList.remove('no-scroll'); // restore scrolling
             
-            // Return to original container after transition finishes
-            setTimeout(() => {
-                if (originalParent) {
-                    if (chatBackdrop) originalParent.insertBefore(chatBackdrop, originalNextSibling);
-                    originalParent.insertBefore(mainChatContainer, originalNextSibling);
-                }
-            }, 400);
+            if (hasInteractedWithChat) {
+                // Minimize to FAB corner
+                mainChatContainer.classList.add('chat-minimized');
+            } else {
+                // Return to original container after transition finishes
+                setTimeout(() => {
+                    if (originalParent) {
+                        if (chatBackdrop) originalParent.insertBefore(chatBackdrop, originalNextSibling);
+                        originalParent.insertBefore(mainChatContainer, originalNextSibling);
+                    }
+                }, 400);
+            }
         }
+    }
+
+    if (mainChatContainer) {
+        // Expand from minimized state when clicked
+        mainChatContainer.addEventListener('click', (e) => {
+            if (mainChatContainer.classList.contains('chat-minimized')) {
+                openChatOverlay();
+            }
+        });
     }
 
     if (chatInput) {
@@ -233,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const botIntents = [
         {
-            keywords: ["juspay", "what did you do", "experience at juspay", "role at juspay", "your work at juspay", "work"],
+            keywords: ["juspay", "what did you do", "experience at juspay", "role at juspay", "your work at juspay", "work", "job", "current role"],
             answer: "At Juspay, I am the Lead Technical Writer responsible for Express Checkout and HyperCheckout across India, SEA, and MENA. I collaborate directly with engineers to document complex fintech flows like OTM, UPI Collect, and 3DS."
         },
         {
@@ -241,20 +257,32 @@ document.addEventListener('DOMContentLoaded', () => {
             answer: "My API documentation strategy involves going beyond standard reference generation. I create layered, self-serve merchant guides (platform → product → flow) bundled with sequence diagrams and exhaustive multi-region cURL/JSON error code references."
         },
         {
-            keywords: ["fintech", "workflows", "domain", "payment", "gateways", "expertise"],
+            keywords: ["fintech", "workflows", "domain", "payment", "gateways", "expertise", "finance"],
             answer: "My core domain expertise includes REST API documentation, payment gateway integrations, developer portal architecture, and highly complex fintech workflows (like 3DS, UPI, Mandates, digital wallets, recon, and split settlements)."
+        },
+        {
+            keywords: ["signzy", "previous job", "past experience"],
+            answer: "At Signzy Technologies, I started as a Technical Writer creating API docs that reduced support tickets by ~20%. I then transitioned into a Product Specialist role where I spearheaded the relaunch of Video KYC, dropping customer churn by 15%."
+        },
+        {
+            keywords: ["education", "degree", "college", "university", "study", "graduate"],
+            answer: "I graduated with a Bachelor of Commerce from Savitribai Phule Pune University in Pune, India (03/2011 – 05/2014)."
         },
         {
             keywords: ["measure", "success", "metric", "impact", "evaluate"],
             answer: "I measure documentation success strictly by impact: tracking the reduction in support escalations and merchant integration time. For instance, my documentation strategies previously reduced client setup time by ~30% and support tickets by ~20%."
         },
         {
-            keywords: ["contact", "email", "reach", "hire", "phone"],
-            answer: "You can reach out to me via email at 08sharma.ra@gmail.com, use the contact form below, or connect with me on LinkedIn!"
+            keywords: ["contact", "email", "reach", "hire", "phone", "call", "connect"],
+            answer: "You can reach out to me via email at 08sharma.ra@gmail.com, call me at +91 9560688917, or connect with me on LinkedIn at linkedin.com/in/08rahulsharma."
         },
         {
-            keywords: ["skill", "tool", "stack", "markdown", "git", "postman"],
-            answer: "My technical stack is heavily Docs-as-Code. I use Markdown, Git, OpenAPI/Swagger, Postman, and Jira/Confluence. I also have robust experience setting up developer portal architectures."
+            keywords: ["skill", "tool", "stack", "markdown", "git", "postman", "tech", "technologies"],
+            answer: "My highly specialized technical stack is heavily purely Docs-as-Code. I use Markdown, Git, OpenAPI/Swagger, Postman, Figma, and Jira/Confluence. I also possess robust experience designing complete developer portal architectures."
+        },
+        {
+            keywords: ["about", "who are you", "summary", "profile", "intro"],
+            answer: "I am a Senior Technical Writer with 4+ years of specialized experience in SaaS and fintech. I bridge the gap between code and clarity, translating complex payment infrastructures into structured, self-serve documentation."
         }
     ];
 
@@ -307,6 +335,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleChatRequest(question) {
         if (!question.trim()) return;
+        
+        hasInteractedWithChat = true;
         
         // Add User Message
         addMessage(question, 'user');
