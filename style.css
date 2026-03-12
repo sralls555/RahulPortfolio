@@ -37,8 +37,9 @@
     box-sizing: border-box;
 }
 
-html {
+html, body {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 body {
@@ -1158,6 +1159,16 @@ img {
 }
 
 @media screen and (max-width: 768px) {
+    .section {
+        padding: 4rem 0;
+    }
+    .section-container {
+        gap: 2rem;
+    }
+    .hero {
+        min-height: auto;
+        padding-bottom: 3rem;
+    }
     .nav-links {
         display: none;
         position: absolute;
@@ -1180,7 +1191,11 @@ img {
     }
 
     .hero-title {
-        font-size: 3rem;
+        font-size: 2.5rem;
+        margin-top: 1rem;
+    }
+    .hero-subtitle {
+        font-size: 1.3rem;
     }
 
     .visual-wrapper {
@@ -1206,7 +1221,10 @@ img {
     }
 
     .contact-form {
-        padding: 2rem;
+        padding: 1.5rem;
+    }
+    .form-title {
+        font-size: 1.5rem;
     }
 
     .skills-flex {
