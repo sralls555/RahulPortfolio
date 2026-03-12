@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     clearInterval(typeWriter);
                     contentDiv.classList.remove('typing-cursor');
                 }
-            }, 15); // Fast but readable Apple-style typing speed
+            }, 30); // Slowed down Apple-style typing speed
         } else {
             contentDiv.innerHTML = text;
             chatDisplay.scrollTop = chatDisplay.scrollHeight;

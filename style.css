@@ -1310,6 +1310,21 @@ img {
         font-size: 1.5rem;
     }
 
+    /* Widen chat overlay on mobile */
+    .chat-overlay-active {
+        width: 95% !important;
+        height: 90vh !important;
+    }
+    .chat-message {
+        max-width: 95%;
+    }
+    .chat-display {
+        padding: 1.5rem 1rem;
+    }
+    .message-content {
+        padding: 0.8rem 1.2rem;
+    }
+
     .skills-flex {
         justify-content: center;
     }
