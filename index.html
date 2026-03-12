@@ -67,7 +67,9 @@
             <h3 class="section-badge">Interactive</h3>
             <h2 class="section-title">Ask Me <span class="gradient-text">Anything</span></h2>
 
-            <div class="chat-container glass-panel reveal">
+            <div id="chat-backdrop"></div>
+            <div class="chat-container glass-panel reveal" id="main-chat-container">
+                <button id="close-chat" class="close-chat-btn" aria-label="Close Chat"><i class="fas fa-times"></i></button>
                 <div class="chat-display" id="chat-display">
                     <!-- Initial Bot Message -->
                     <div class="chat-message bot-message">

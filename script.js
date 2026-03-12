@@ -184,6 +184,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatInput = document.getElementById('chat-input');
     const chatDisplay = document.getElementById('chat-display');
     const chatChips = document.querySelectorAll('.chat-chip');
+    const mainChatContainer = document.getElementById('main-chat-container');
+    const chatBackdrop = document.getElementById('chat-backdrop');
+    const closeChatBtn = document.getElementById('close-chat');
+
+    function openChatOverlay() {
+        if (mainChatContainer && !mainChatContainer.classList.contains('chat-overlay-active')) {
+            mainChatContainer.classList.add('chat-overlay-active');
+            if(chatBackdrop) chatBackdrop.classList.add('active');
+            document.body.style.overflow = 'hidden'; // prevent scrolling behind
+            setTimeout(() => { if(chatInput) chatInput.focus(); }, 100);
+        }
+    }
+
+    function closeChatOverlay() {
+        if (mainChatContainer) {
+            mainChatContainer.classList.remove('chat-overlay-active');
+            if(chatBackdrop) chatBackdrop.classList.remove('active');
+            document.body.style.overflow = ''; // restore scrolling
+        }
+    }
+
+    if (chatInput) {
+        chatInput.addEventListener('focus', openChatOverlay);
+    }
+    if (closeChatBtn) {
+        closeChatBtn.addEventListener('click', closeChatOverlay);
+    }
+    if (chatBackdrop) {
+        chatBackdrop.addEventListener('click', closeChatOverlay);
+    }
 
     const botIntents = [
         {
@@ -260,6 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (chatForm) {
         chatForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            openChatOverlay();
             handleChatRequest(chatInput.value);
         });
     }
@@ -267,6 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle chips
     chatChips.forEach(chip => {
         chip.addEventListener('click', () => {
+            openChatOverlay();
             handleChatRequest(chip.getAttribute('data-question'));
         });
     });
