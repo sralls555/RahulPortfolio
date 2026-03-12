@@ -187,9 +187,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainChatContainer = document.getElementById('main-chat-container');
     const chatBackdrop = document.getElementById('chat-backdrop');
     const closeChatBtn = document.getElementById('close-chat');
+    
+    // Remember original DOM position
+    const originalParent = mainChatContainer ? mainChatContainer.parentElement : null;
+    const originalNextSibling = mainChatContainer ? mainChatContainer.nextSibling : null;
 
     function openChatOverlay() {
         if (mainChatContainer && !mainChatContainer.classList.contains('chat-overlay-active')) {
+            // Escape any container stacking contexts/transforms by moving to body
+            if (chatBackdrop) document.body.appendChild(chatBackdrop);
+            document.body.appendChild(mainChatContainer);
+            
             mainChatContainer.classList.add('chat-overlay-active');
             if(chatBackdrop) chatBackdrop.classList.add('active');
             document.documentElement.classList.add('no-scroll'); // prevent scrolling behind
@@ -202,6 +210,14 @@ document.addEventListener('DOMContentLoaded', () => {
             mainChatContainer.classList.remove('chat-overlay-active');
             if(chatBackdrop) chatBackdrop.classList.remove('active');
             document.documentElement.classList.remove('no-scroll'); // restore scrolling
+            
+            // Return to original container after transition finishes
+            setTimeout(() => {
+                if (originalParent) {
+                    if (chatBackdrop) originalParent.insertBefore(chatBackdrop, originalNextSibling);
+                    originalParent.insertBefore(mainChatContainer, originalNextSibling);
+                }
+            }, 400);
         }
     }
 
