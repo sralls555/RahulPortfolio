@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mainChatContainer && !mainChatContainer.classList.contains('chat-overlay-active')) {
             mainChatContainer.classList.add('chat-overlay-active');
             if(chatBackdrop) chatBackdrop.classList.add('active');
-            document.body.style.overflow = 'hidden'; // prevent scrolling behind
+            document.documentElement.classList.add('no-scroll'); // prevent scrolling behind
             setTimeout(() => { if(chatInput) chatInput.focus(); }, 100);
         }
     }
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mainChatContainer) {
             mainChatContainer.classList.remove('chat-overlay-active');
             if(chatBackdrop) chatBackdrop.classList.remove('active');
-            document.body.style.overflow = ''; // restore scrolling
+            document.documentElement.classList.remove('no-scroll'); // restore scrolling
         }
     }
 

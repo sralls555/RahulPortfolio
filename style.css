@@ -59,6 +59,13 @@ body {
     /* Custom cursor */
 }
 
+.no-scroll {
+    overflow: hidden !important;
+}
+.no-scroll body {
+    overflow: hidden !important;
+}
+
 a {
     text-decoration: none;
     color: inherit;
