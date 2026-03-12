@@ -930,6 +930,11 @@ img {
     z-index: 9999 !important;
     box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(99, 102, 241, 0.3) !important;
 }
+.chat-fade-out {
+    opacity: 0 !important;
+    transform: translate(-50%, -45%) scale(0.95) !important;
+    pointer-events: none !important;
+}
 .chat-minimized {
     position: fixed !important;
     bottom: 30px !important;

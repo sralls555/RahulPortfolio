@@ -209,17 +209,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function closeChatOverlay(minimizeToFAB = false) {
         if (mainChatContainer) {
-            mainChatContainer.classList.remove('chat-overlay-active');
             if(chatBackdrop) chatBackdrop.classList.remove('active');
             document.documentElement.classList.remove('no-scroll'); // restore scrolling
             
             if (hasInteractedWithChat && minimizeToFAB) {
                 // Minimize to FAB corner
+                mainChatContainer.classList.remove('chat-overlay-active');
                 mainChatContainer.classList.add('chat-minimized');
             } else {
-                // Return to original container inline after transition finishes
-                mainChatContainer.classList.remove('chat-minimized');
+                // Smoothly return to original container inline
+                mainChatContainer.classList.add('chat-fade-out');
+                
                 setTimeout(() => {
+                    mainChatContainer.classList.remove('chat-overlay-active');
+                    mainChatContainer.classList.remove('chat-fade-out');
+                    mainChatContainer.classList.remove('chat-minimized');
+                    
                     if (originalParent) {
                         if (chatBackdrop) originalParent.insertBefore(chatBackdrop, originalNextSibling);
                         originalParent.insertBefore(mainChatContainer, originalNextSibling);
