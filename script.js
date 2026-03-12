@@ -280,9 +280,16 @@ document.addEventListener('DOMContentLoaded', () => {
             let i = 0;
             const typeWriter = setInterval(() => {
                 if (i < text.length) {
+                    // Check if user is scrolled near the bottom before modifying content
+                    const isNearBottom = chatDisplay.scrollHeight - chatDisplay.scrollTop - chatDisplay.clientHeight <= 20;
+                    
                     contentDiv.innerHTML += text.charAt(i);
                     i++;
-                    chatDisplay.scrollTop = chatDisplay.scrollHeight; // Auto-scroll while typing
+                    
+                    if (isNearBottom) {
+                        chatDisplay.scrollTop = chatDisplay.scrollHeight; // Auto-scroll only if already near bottom
+                    }
+                    
                     // Subtle vibration for mobile when typing characters
                     if (navigator.vibrate && i % 3 === 0) { 
                         navigator.vibrate(5); // Ultra-light 5ms tap perfectly simulates haptic typing

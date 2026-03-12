@@ -969,11 +969,12 @@ img {
     max-width: 80%;
 }
 .bot-message {
-    align-self: flex-start;
-}
-.user-message {
     align-self: flex-end;
     flex-direction: row-reverse;
+}
+.user-message {
+    align-self: flex-start;
+    flex-direction: row;
 }
 .bot-avatar, .user-avatar {
     width: 40px;
@@ -1012,7 +1013,7 @@ img {
 @keyframes blink {
     50% { opacity: 0; }
 }
-.user-message .message-content {
+.bot-message .message-content {
     background: rgba(99, 102, 241, 0.15);
     border-color: rgba(99, 102, 241, 0.3);
 }
